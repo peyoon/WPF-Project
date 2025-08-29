@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace WpfLogin.Models
+namespace WpfOlzServer.Models
 {
     public class Loginfo
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WpfLogin.Network
+namespace WpfOlzServer.Network
 {
     public enum E_HeadType : Int16
     {

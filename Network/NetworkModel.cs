@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfLogin.Network
+namespace WpfOlzServer.Network
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct T_HeadModel
@@ -16,6 +16,16 @@ namespace WpfLogin.Network
         public E_HeadType Type;
         public E_OPCode Opcode;
         public Int32 Size;
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// 네트워크통신 데이터 포맷에 따른 변환 구조
+        /// 파라미터 : 
+        /// 반 환 값 : -
+        /// 작 성 자 : 강현우
+        /// 작 성 일 : 2025년 08월 22일
+        /// </summary>
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public void ByteSwapLittleOrBig(bool IsBig)
         {
             if (IsBig)
@@ -37,10 +47,6 @@ namespace WpfLogin.Network
 
                     this.Size = BitConverter.ToInt32(sizebytes, 0);
                 }
-                else
-                {
-
-                }
             }
             else
             {
@@ -61,13 +67,8 @@ namespace WpfLogin.Network
 
                     this.Size = BitConverter.ToInt32(sizebytes, 0);
                 }
-                else
-                {
-
-                }
             }
         }
-
         public byte[] GetSizeBytes(bool IsBigendian)
         {
             byte[] returnbytes = new byte[4];
@@ -169,6 +170,27 @@ namespace WpfLogin.Network
 
     public static class HeadModel
     {
+        public static T_HeadModel Frombytes(byte[] data)
+        {
+            T_HeadModel t_HeadModel = new T_HeadModel();
+            int size = Marshal.SizeOf<T_HeadModel>();
+            IntPtr headptr = Marshal.AllocHGlobal(size);
+
+            try
+            {
+                Marshal.Copy(data, 0, headptr, size);
+                t_HeadModel = Marshal.PtrToStructure<T_HeadModel>(headptr);
+                t_HeadModel.ByteSwapLittleOrBig(false);
+            }
+            catch
+            {
+
+            }
+
+            return t_HeadModel;
+        }
+
+
         public static byte[] HeadMessage(E_OPCode opcode,E_HeadType type,int size)
         {
             byte[] headbytes = new byte[0];
@@ -218,29 +240,6 @@ namespace WpfLogin.Network
 
 
             return headbytes;
-        }
-
-
-        public static T_HeadModel Frombytes(byte[] data)
-        {
-            T_HeadModel t_HeadModel = new T_HeadModel();
-            int size = Marshal.SizeOf<T_HeadModel>();
-
-
-            IntPtr headptr = Marshal.AllocHGlobal(size);
-
-            try
-            {
-                Marshal.Copy(data, 0, headptr, size);
-                t_HeadModel = Marshal.PtrToStructure<T_HeadModel>(headptr);
-                t_HeadModel.ByteSwapLittleOrBig(false);
-            }
-            catch
-            {
-
-            }
-
-            return t_HeadModel;
         }
     }
 }
