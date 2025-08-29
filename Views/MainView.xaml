@@ -1,0 +1,261 @@
+﻿<Window x:Class="WpfLogin.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfLogin.Views"
+        xmlns:vm="clr-namespace:WpfLogin.ViewModels"
+        mc:Ignorable="d"
+        Title="Olz FOOTBALL" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
+
+    <!--<Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>-->
+
+    <Window.Resources>
+
+        <Style TargetType="Button" x:Key="PrimaryButtonStyle">
+            <Setter Property="Background" Value="#EB911E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D6831C"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Gray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Border" x:Key="CardStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" Color="Black" Opacity="0.1" BlurRadius="10"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="HeaderTextStyle">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#A03223"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" BorderThickness="0,0,0,3" BorderBrush="Transparent" Background="Transparent">
+                            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#F5C837" />
+                                <Setter Property="Foreground" Value="#A03223"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#F5C837" />
+                                <Setter Property="Foreground" Value="#A03223"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                <GradientStop Color="#FFEAEAEA" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <TabControl Background="White" BorderThickness="0" Padding="10">
+            <TabItem Header="마이페이지">
+                <Grid>
+                    <Border Style="{StaticResource CardStyle}" MaxWidth="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel>
+                            <TextBlock Text="마이페이지" Style="{StaticResource HeaderTextStyle}" HorizontalAlignment="Center"/>
+                            <Ellipse Width="120" Height="120" Cursor="Hand" MouseLeftButtonDown="ProfileImage_MouseLeftButtonDown" Stroke="#F5C837" StrokeThickness="3" Margin="0,0,0,25">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding ProfileImagePath}" Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="이름:" FontWeight="Bold" Margin="5,8" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding UserName}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=False}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True}" Padding="5"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="직급:" FontWeight="Bold" Margin="5,8" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Grade}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=False}"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Grade, UpdateSourceTrigger=PropertyChanged}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True}" Padding="5"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="이메일:" FontWeight="Bold" Margin="5,8" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Email}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=False}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True}" Padding="5"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="사번:" FontWeight="Bold" Margin="5,8" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding JoinDate}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=False}"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding JoinDate, UpdateSourceTrigger=PropertyChanged}" Margin="5,8" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True}" Padding="5"/>
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
+                                <Button Content="프로필 수정" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Click="BtnEditProfile_Click"/>
+                                <Button Content="프로필 저장" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Command="{Binding SaveProfileCommand}"/>
+                                <Button Content="로그아웃" Style="{StaticResource PrimaryButtonStyle}" Margin="5" Click="LogoutButton_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="조직도">
+                <local:OrganizationChartView/>
+            </TabItem>
+
+            <TabItem Header="투표">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,10">
+                        <Button Content="일정 새로고침 🔄" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding LoadSchedulesCommand}"/>
+                        <Button Content="나의 신청내역 보기 ✅" Style="{StaticResource PrimaryButtonStyle}" Margin="10,0,0,0" Command="{Binding ShowMySchedulesCommand}"/>
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Text="전체 풋살 일정" Style="{StaticResource HeaderTextStyle}"/>
+                                <ListView ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedSchedule, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Padding="10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd ddd HH:mm'}" FontWeight="Bold" FontSize="16" Foreground="#A03223"/>
+                                                        <TextBlock Text="{Binding Location}" Foreground="DarkSlateGray" Margin="0,5,0,0"/>
+                                                        <TextBlock Text="{Binding ParticipantStatusText}" Foreground="#EB911E" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                                    </StackPanel>
+                                                    <Button Grid.Column="1" VerticalAlignment="Center" Width="100" Content="{Binding StatusText}" IsEnabled="{Binding IsButtonEnabled}"
+                                                        Style="{StaticResource PrimaryButtonStyle}"
+                                                        Command="{Binding DataContext.ToggleApplicationCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </DockPanel>
+                        </Border>
+
+                        <Grid Grid.Column="1" Margin="10,0,0,0">
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource CardStyle}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedSchedule}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Top" Text="나의 신청 내역" Style="{StaticResource HeaderTextStyle}"/>
+                                    <ListView ItemsSource="{Binding MyAppliedSchedules}" BorderThickness="0">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Padding="10">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Date, StringFormat='yyyy년 MM월 dd일 (ddd) HH:mm'}" FontWeight="Bold" FontSize="16" Foreground="#A03223"/>
+                                                        <TextBlock Text="{Binding Location}" Foreground="DarkSlateGray" Margin="0,5,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </DockPanel>
+                            </Border>
+
+                            <Border DataContext="{Binding SelectedSchedule}">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource CardStyle}">
+                                        <Setter Property="BorderBrush" Value="#F5C837"/>
+                                        <Setter Property="BorderThickness" Value="2"/>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <DockPanel>
+                                    <StackPanel DockPanel.Dock="Top" Background="#A03223">
+                                        <TextBlock Text="⚽ 참여자 명단" FontSize="18" FontWeight="Bold" Padding="10" TextAlignment="Center" Foreground="White"/>
+                                    </StackPanel>
+                                    <ListView ItemsSource="{Binding Participants}" BorderThickness="0">
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Padding" Value="10,8"/>
+                                                <Setter Property="FontSize" Value="14"/>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                    </ListView>
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
