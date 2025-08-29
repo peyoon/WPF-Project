@@ -1,0 +1,6 @@
+C:\Users\Olzetek\Documents\OJT\2025_ASW2_OJT\OJTwpfApp\OJTToolKit\bin\Debug\OJTToolKit.dll
+C:\Users\Olzetek\Documents\OJT\2025_ASW2_OJT\OJTwpfApp\OJTToolKit\bin\Debug\OJTToolKit.pdb
+C:\Users\Olzetek\Documents\OJT\2025_ASW2_OJT\OJTwpfApp\OJTToolKit\obj\Debug\OJTToolKit.csproj.AssemblyReference.cache
+C:\Users\Olzetek\Documents\OJT\2025_ASW2_OJT\OJTwpfApp\OJTToolKit\obj\Debug\OJTToolKit.csproj.CoreCompileInputs.cache
+C:\Users\Olzetek\Documents\OJT\2025_ASW2_OJT\OJTwpfApp\OJTToolKit\obj\Debug\OJTToolKit.dll
+C:\Users\Olzetek\Documents\OJT\2025_ASW2_OJT\OJTwpfApp\OJTToolKit\obj\Debug\OJTToolKit.pdb
